@@ -1,3 +1,60 @@
 <resources>
     <string name="app_name">Recetario</string>
+
+    <string name="list_title">Recetario</string>
+    <string name="list_search_hint">Buscar recetas o ingredientes</string>
+    <string name="list_filter_categories">Categorías</string>
+    <string name="list_filter_difficulty">Dificultad</string>
+    <string name="list_max_time">Tiempo máx: %1$d min</string>
+    <string name="list_only_favorites">Solo favoritos</string>
+    <string name="list_sort_recent">Recientes</string>
+    <string name="list_sort_alphabetical">A-Z</string>
+    <string name="list_sort_time">Tiempo</string>
+    <string name="list_sort_difficulty">Dificultad</string>
+    <string name="list_empty_title">No encontramos recetas</string>
+    <string name="list_empty_subtitle">Intenta con otros filtros</string>
+    <string name="list_empty_action">Limpiar filtros</string>
+    <string name="list_loading">Cargando recetas…</string>
+    <string name="list_fab_new">Nueva receta</string>
+    <string name="list_favorites_badge">Favoritos: %1$d</string>
+    <string name="list_clear_filters">Limpiar</string>
+    <string name="list_prep_time">%1$d min</string>
+    <string name="list_favorite_cd">Marcar como favorito</string>
+    <string name="list_unfavorite_cd">Quitar de favoritos</string>
+
+    <string name="category_entrada">Entrada</string>
+    <string name="category_plato_fuerte">Plato fuerte</string>
+    <string name="category_postre">Postre</string>
+    <string name="category_bebida">Bebida</string>
+    <string name="category_sopa">Sopa</string>
+    <string name="category_ensalada">Ensalada</string>
+
+    <string name="difficulty_facil">Fácil</string>
+    <string name="difficulty_media">Media</string>
+    <string name="difficulty_dificil">Difícil</string>
+
+    <string name="detail_back_cd">Regresar</string>
+    <string name="detail_portions">Porciones: %1$d</string>
+    <string name="detail_ingredients">Ingredientes</string>
+    <string name="detail_steps">Preparación</string>
+    <string name="detail_description">Descripción</string>
+
+    <string name="form_title">Nueva receta</string>
+    <string name="form_close_cd">Cerrar</string>
+    <string name="form_field_title">Título</string>
+    <string name="form_field_description">Descripción</string>
+    <string name="form_field_prep_time">Tiempo (min)</string>
+    <string name="form_field_portions">Porciones base</string>
+    <string name="form_section_category">Categoría</string>
+    <string name="form_section_difficulty">Dificultad</string>
+    <string name="form_section_ingredients">Ingredientes</string>
+    <string name="form_section_steps">Preparación</string>
+    <string name="form_add_ingredient">Agregar ingrediente</string>
+    <string name="form_add_step">Agregar paso</string>
+    <string name="form_save">Guardar receta</string>
+    <string name="form_error_title_required">El título es obligatorio</string>
+    <string name="form_error_title_length">El título debe tener entre 3 y 60 caracteres</string>
+    <string name="form_error_ingredients">Agrega al menos un ingrediente</string>
+    <string name="form_error_steps">Agrega al menos un paso</string>
+    <string name="form_error_time">El tiempo debe ser mayor a 0</string>
 </resources>
