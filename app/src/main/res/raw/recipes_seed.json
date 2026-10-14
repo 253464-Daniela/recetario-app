@@ -1,0 +1,230 @@
+[
+  {
+    "id": "seed_001",
+    "title": "Tacos al pastor",
+    "description": "Clásico mexicano con piña y adobo marinado por 12 horas.",
+    "category": "PLATO_FUERTE",
+    "difficulty": "MEDIA",
+    "prepTimeMinutes": 45,
+    "basePortions": 4,
+    "ingredients": [
+      { "name": "Carne de cerdo", "quantity": 500.0, "unit": "g" },
+      { "name": "Tortillas de maíz", "quantity": 12.0, "unit": "pza" },
+      { "name": "Piña", "quantity": 1.0, "unit": "taza" },
+      { "name": "Cebolla", "quantity": 1.0, "unit": "pza" },
+      { "name": "Cilantro", "quantity": 0.5, "unit": "taza" }
+    ],
+    "steps": [
+      "Marinar la carne con adobo durante 12 horas.",
+      "Cocinar a fuego alto en el trompo o sartén.",
+      "Servir sobre tortillas calientes con piña, cebolla y cilantro."
+    ],
+    "isFavorite": false,
+    "isUserCreated": false,
+    "createdAt": 1700000000000
+  },
+  {
+    "id": "seed_002",
+    "title": "Ensalada César",
+    "description": "Ensalada fresca con aderezo cremoso y crutones.",
+    "category": "ENSALADA",
+    "difficulty": "FACIL",
+    "prepTimeMinutes": 15,
+    "basePortions": 2,
+    "ingredients": [
+      { "name": "Lechuga romana", "quantity": 1.0, "unit": "pza" },
+      { "name": "Pollo a la parrilla", "quantity": 200.0, "unit": "g" },
+      { "name": "Queso parmesano", "quantity": 50.0, "unit": "g" },
+      { "name": "Aderezo César", "quantity": 4.0, "unit": "cda" }
+    ],
+    "steps": [
+      "Lavar y trozar la lechuga.",
+      "Cocinar el pollo a la parrilla y cortar en tiras.",
+      "Mezclar todo y bañar con aderezo."
+    ],
+    "isFavorite": false,
+    "isUserCreated": false,
+    "createdAt": 1700000000001
+  },
+  {
+    "id": "seed_003",
+    "title": "Flan napolitano",
+    "description": "Postre clásico con caramelo y textura sedosa.",
+    "category": "POSTRE",
+    "difficulty": "DIFICIL",
+    "prepTimeMinutes": 60,
+    "basePortions": 8,
+    "ingredients": [
+      { "name": "Leche condensada", "quantity": 1.0, "unit": "lata" },
+      { "name": "Leche evaporada", "quantity": 1.0, "unit": "lata" },
+      { "name": "Huevos", "quantity": 4.0, "unit": "pza" },
+      { "name": "Azúcar para caramelo", "quantity": 1.0, "unit": "taza" }
+    ],
+    "steps": [
+      "Hacer el caramelo y cubrir el molde.",
+      "Licuar todos los ingredientes y verter en el molde.",
+      "Hornear a baño María por 45 minutos.",
+      "Refrigerar antes de desmoldar."
+    ],
+    "isFavorite": false,
+    "isUserCreated": false,
+    "createdAt": 1700000000002
+  },
+  {
+    "id": "seed_004",
+    "title": "Sopa de tortilla",
+    "description": "Caldo de jitomate con tortilla crujiente y aguacate.",
+    "category": "SOPA",
+    "difficulty": "MEDIA",
+    "prepTimeMinutes": 30,
+    "basePortions": 4,
+    "ingredients": [
+      { "name": "Jitomate", "quantity": 6.0, "unit": "pza" },
+      { "name": "Tortillas", "quantity": 6.0, "unit": "pza" },
+      { "name": "Aguacate", "quantity": 1.0, "unit": "pza" },
+      { "name": "Chile pasilla", "quantity": 2.0, "unit": "pza" }
+    ],
+    "steps": [
+      "Hervir jitomates y licuar con chile pasilla.",
+      "Freír tortillas en tiras.",
+      "Servir el caldo caliente con las guarniciones."
+    ],
+    "isFavorite": false,
+    "isUserCreated": false,
+    "createdAt": 1700000000003
+  },
+  {
+    "id": "seed_005",
+    "title": "Guacamole",
+    "description": "Dip mexicano fresco con aguacate y limón.",
+    "category": "ENTRADA",
+    "difficulty": "FACIL",
+    "prepTimeMinutes": 10,
+    "basePortions": 4,
+    "ingredients": [
+      { "name": "Aguacate", "quantity": 3.0, "unit": "pza" },
+      { "name": "Jitomate", "quantity": 1.0, "unit": "pza" },
+      { "name": "Cebolla", "quantity": 0.5, "unit": "pza" },
+      { "name": "Limón", "quantity": 1.0, "unit": "pza" }
+    ],
+    "steps": [
+      "Machacar los aguacates.",
+      "Picar finamente jitomate y cebolla.",
+      "Mezclar con jugo de limón y sal."
+    ],
+    "isFavorite": false,
+    "isUserCreated": false,
+    "createdAt": 1700000000004
+  },
+  {
+    "id": "seed_006",
+    "title": "Agua de horchata",
+    "description": "Bebida tradicional de arroz y canela.",
+    "category": "BEBIDA",
+    "difficulty": "FACIL",
+    "prepTimeMinutes": 20,
+    "basePortions": 6,
+    "ingredients": [
+      { "name": "Arroz", "quantity": 1.0, "unit": "taza" },
+      { "name": "Canela", "quantity": 2.0, "unit": "pza" },
+      { "name": "Leche condensada", "quantity": 0.5, "unit": "lata" }
+    ],
+    "steps": [
+      "Remojar el arroz con canela durante 2 horas.",
+      "Licuar y colar.",
+      "Endulzar al gusto y servir frío."
+    ],
+    "isFavorite": false,
+    "isUserCreated": false,
+    "createdAt": 1700000000005
+  },
+  {
+    "id": "seed_007",
+    "title": "Pozole rojo",
+    "description": "Caldo tradicional con maíz cacahuazintle y cerdo.",
+    "category": "PLATO_FUERTE",
+    "difficulty": "DIFICIL",
+    "prepTimeMinutes": 120,
+    "basePortions": 8,
+    "ingredients": [
+      { "name": "Maíz pozolero", "quantity": 1.0, "unit": "kg" },
+      { "name": "Carne de cerdo", "quantity": 1.0, "unit": "kg" },
+      { "name": "Chile guajillo", "quantity": 5.0, "unit": "pza" }
+    ],
+    "steps": [
+      "Cocer el maíz durante 2 horas.",
+      "Preparar el adobo con chiles guajillo.",
+      "Agregar la carne y cocer hasta suavizar."
+    ],
+    "isFavorite": false,
+    "isUserCreated": false,
+    "createdAt": 1700000000006
+  },
+  {
+    "id": "seed_008",
+    "title": "Chiles rellenos",
+    "description": "Chiles poblanos rellenos de queso capeados.",
+    "category": "PLATO_FUERTE",
+    "difficulty": "MEDIA",
+    "prepTimeMinutes": 50,
+    "basePortions": 4,
+    "ingredients": [
+      { "name": "Chile poblano", "quantity": 4.0, "unit": "pza" },
+      { "name": "Queso Oaxaca", "quantity": 300.0, "unit": "g" },
+      { "name": "Huevo", "quantity": 3.0, "unit": "pza" }
+    ],
+    "steps": [
+      "Asar y pelar los chiles.",
+      "Rellenar con queso.",
+      "Capear y freír."
+    ],
+    "isFavorite": false,
+    "isUserCreated": false,
+    "createdAt": 1700000000007
+  },
+  {
+    "id": "seed_009",
+    "title": "Tostadas de tinga",
+    "description": "Tostadas crujientes con pollo en salsa de chipotle.",
+    "category": "ENTRADA",
+    "difficulty": "FACIL",
+    "prepTimeMinutes": 25,
+    "basePortions": 4,
+    "ingredients": [
+      { "name": "Tostadas", "quantity": 8.0, "unit": "pza" },
+      { "name": "Pollo deshebrado", "quantity": 300.0, "unit": "g" },
+      { "name": "Chile chipotle", "quantity": 2.0, "unit": "pza" }
+    ],
+    "steps": [
+      "Guisar el pollo con chipotle y cebolla.",
+      "Servir sobre tostadas.",
+      "Agregar crema, queso y aguacate."
+    ],
+    "isFavorite": false,
+    "isUserCreated": false,
+    "createdAt": 1700000000008
+  },
+  {
+    "id": "seed_010",
+    "title": "Arroz con leche",
+    "description": "Postre cremoso con canela y pasas.",
+    "category": "POSTRE",
+    "difficulty": "FACIL",
+    "prepTimeMinutes": 40,
+    "basePortions": 6,
+    "ingredients": [
+      { "name": "Arroz", "quantity": 1.0, "unit": "taza" },
+      { "name": "Leche entera", "quantity": 1.0, "unit": "l" },
+      { "name": "Canela", "quantity": 1.0, "unit": "pza" },
+      { "name": "Pasas", "quantity": 0.5, "unit": "taza" }
+    ],
+    "steps": [
+      "Cocer el arroz con canela.",
+      "Agregar la leche y endulzar.",
+      "Cocinar hasta espesar y agregar pasas."
+    ],
+    "isFavorite": false,
+    "isUserCreated": false,
+    "createdAt": 1700000000009
+  }
+]
