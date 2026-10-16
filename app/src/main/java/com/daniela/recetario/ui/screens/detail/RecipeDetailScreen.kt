@@ -53,12 +53,14 @@ import com.daniela.recetario.ui.components.localizedName
 import com.daniela.recetario.ui.theme.FavoriteRed
 import com.daniela.recetario.ui.theme.RecetarioTheme
 import com.daniela.recetario.ui.util.recetarioApp
+import androidx.compose.material.icons.filled.Edit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeDetailRoute(
     recipeId: String,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onEdit: (String) -> Unit
 ) {
     val app = recetarioApp()
     val viewModel: RecipeDetailViewModel = viewModel(
@@ -70,7 +72,8 @@ fun RecipeDetailRoute(
     RecipeDetailScreen(
         uiState = uiState,
         onEvent = viewModel::onEvent,
-        onBack = onBack
+        onBack = onBack,
+        onEdit = onEdit
     )
 }
 
@@ -79,7 +82,8 @@ fun RecipeDetailRoute(
 fun RecipeDetailScreen(
     uiState: RecipeDetailUiState,
     onEvent: (RecipeDetailEvent) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onEdit: (String) -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -96,6 +100,14 @@ fun RecipeDetailScreen(
                 actions = {
                     val recipe = uiState.recipe
                     if (recipe != null) {
+                        if (recipe.isUserCreated) {
+                            IconButton(onClick = { onEdit(recipe.id) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Edit,
+                                    contentDescription = stringResource(R.string.detail_edit_cd)
+                                )
+                            }
+                        }
                         IconButton(onClick = { onEvent(RecipeDetailEvent.OnToggleFavorite) }) {
                             Icon(
                                 imageVector = if (recipe.isFavorite) Icons.Filled.Favorite

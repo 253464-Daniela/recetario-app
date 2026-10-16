@@ -67,4 +67,12 @@
     <string name="form_image_placeholder">Agregar imagen (opcional)</string>
     <string name="form_saved_success">Receta guardada</string>
     <string name="form_ingredient_error">El ingrediente debe tener nombre y cantidad</string>
+
+    <!-- Editar y eliminar -->
+    <string name="form_title_edit">Editar receta</string>
+    <string name="form_save_edit">Actualizar receta</string>
+    <string name="detail_edit_cd">Editar receta</string>
+    <string name="list_deleted_snackbar">Receta eliminada</string>
+    <string name="list_undo">Deshacer</string>
+    <string name="list_delete_cd">Eliminar receta</string>
 </resources>

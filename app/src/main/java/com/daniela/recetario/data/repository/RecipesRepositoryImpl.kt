@@ -41,4 +41,12 @@ class RecipesRepositoryImpl(
         val current = preferences.recipesFlow.first()
         preferences.saveRecipes(current.filterNot { it.id == id })
     }
+
+    override suspend fun updateRecipe(recipe: Recipe) {
+        val current = preferences.recipesFlow.first()
+        val updated = current.map { existing ->
+            if (existing.id == recipe.id) recipe else existing
+        }
+        preferences.saveRecipes(updated)
+    }
 }

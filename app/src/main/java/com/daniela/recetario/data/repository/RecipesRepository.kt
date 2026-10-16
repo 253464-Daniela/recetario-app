@@ -8,4 +8,5 @@ interface RecipesRepository {
     suspend fun addRecipe(recipe: Recipe)
     suspend fun toggleFavorite(id: String)
     suspend fun deleteRecipe(id: String)
+    suspend fun updateRecipe(recipe: Recipe)
 }

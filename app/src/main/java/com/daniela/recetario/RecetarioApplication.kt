@@ -11,6 +11,8 @@ import com.daniela.recetario.domain.usecase.FilterRecipesUseCase
 import com.daniela.recetario.domain.usecase.GetRecipesUseCase
 import com.daniela.recetario.domain.usecase.ScaleIngredientsUseCase
 import com.daniela.recetario.domain.usecase.ToggleFavoriteUseCase
+import com.daniela.recetario.domain.usecase.UpdateRecipeUseCase
+
 
 /**
  * Application class que actúa como contenedor de dependencias manual.
@@ -30,4 +32,5 @@ class RecetarioApplication : Application() {
     val deleteRecipeUseCase: DeleteRecipeUseCase by lazy { DeleteRecipeUseCase(recipesRepository) }
     val filterRecipesUseCase: FilterRecipesUseCase by lazy { FilterRecipesUseCase() }
     val scaleIngredientsUseCase: ScaleIngredientsUseCase by lazy { ScaleIngredientsUseCase() }
+    val updateRecipeUseCase: UpdateRecipeUseCase by lazy { UpdateRecipeUseCase(recipesRepository) }
 }

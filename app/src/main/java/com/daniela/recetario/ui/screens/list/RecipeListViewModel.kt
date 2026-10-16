@@ -3,6 +3,7 @@ package com.daniela.recetario.ui.screens.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.daniela.recetario.data.model.Recipe
+import com.daniela.recetario.domain.usecase.AddRecipeUseCase
 import com.daniela.recetario.domain.usecase.DeleteRecipeUseCase
 import com.daniela.recetario.domain.usecase.FilterRecipesUseCase
 import com.daniela.recetario.domain.usecase.GetRecipesUseCase
@@ -19,7 +20,8 @@ class RecipeListViewModel(
     private val getRecipesUseCase: GetRecipesUseCase,
     private val filterRecipesUseCase: FilterRecipesUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
-    private val deleteRecipeUseCase: DeleteRecipeUseCase
+    private val deleteRecipeUseCase: DeleteRecipeUseCase,
+    private val addRecipeUseCase: AddRecipeUseCase
 ) : ViewModel() {
 
     // Backing property: mutable por dentro, inmutable por fuera
@@ -101,7 +103,14 @@ class RecipeListViewModel(
 
             is RecipeListEvent.OnFavoriteToggle -> toggleFavorite(event.recipeId)
 
-            is RecipeListEvent.OnRecipeDelete -> deleteRecipe(event.recipeId)
+            is RecipeListEvent.OnRecipeDelete -> deleteRecipeWithUndo(event.recipeId)
+
+            RecipeListEvent.OnUndoDelete -> undoDelete()
+
+            RecipeListEvent.OnConfirmDelete -> {
+                _uiState.update { it.copy(recentlyDeleted = null) }
+            }
+
 
             RecipeListEvent.OnClearFilters -> clearFilters()
         }
@@ -134,8 +143,25 @@ class RecipeListViewModel(
         viewModelScope.launch { toggleFavoriteUseCase(recipeId) }
     }
 
-    private fun deleteRecipe(recipeId: String) {
-        viewModelScope.launch { deleteRecipeUseCase(recipeId) }
+    private fun deleteRecipeWithUndo(recipeId: String) {
+        val recipe = _uiState.value.recipes.find { it.id == recipeId } ?: return
+        // Regla de negocio: solo se eliminan recetas creadas por el usuario
+        if (!recipe.isUserCreated) return
+
+        viewModelScope.launch {
+            deleteRecipeUseCase(recipeId)
+            _uiState.update { it.copy(recentlyDeleted = recipe) }
+        }
+    }
+
+    private fun undoDelete() {
+        val recipe = _uiState.value.recentlyDeleted ?: return
+        viewModelScope.launch {
+            addRecipeUseCase(
+                recipe.copy(id = java.util.UUID.randomUUID().toString())
+            )
+            _uiState.update { it.copy(recentlyDeleted = null) }
+        }
     }
 
     private fun clearFilters() {
@@ -162,7 +188,8 @@ class RecipeListViewModel(
                         getRecipesUseCase = app.getRecipesUseCase,
                         filterRecipesUseCase = app.filterRecipesUseCase,
                         toggleFavoriteUseCase = app.toggleFavoriteUseCase,
-                        deleteRecipeUseCase = app.deleteRecipeUseCase
+                        deleteRecipeUseCase = app.deleteRecipeUseCase,
+                        addRecipeUseCase = app.addRecipeUseCase
                     ) as T
                 }
             }

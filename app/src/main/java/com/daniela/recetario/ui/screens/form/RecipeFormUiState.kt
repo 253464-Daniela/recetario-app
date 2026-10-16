@@ -30,5 +30,7 @@ data class RecipeFormUiState(
     // ---------- Estado derivado ----------
     val isValid: Boolean = false,
     val isSaving: Boolean = false,
-    val savedSuccessfully: Boolean = false
+    val savedSuccessfully: Boolean = false,
+
+    val isLoading: Boolean = false
 )

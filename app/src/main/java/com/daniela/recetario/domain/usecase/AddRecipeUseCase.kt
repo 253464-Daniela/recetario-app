@@ -15,7 +15,7 @@ class AddRecipeUseCase(
         val sanitized = recipe.copy(
             id = recipe.id.ifBlank { UUID.randomUUID().toString() },
             isUserCreated = true,
-            createdAt = System.currentTimeMillis()
+            createdAt = if (recipe.createdAt <= 0L) System.currentTimeMillis() else recipe.createdAt
         )
         repository.addRecipe(sanitized)
     }

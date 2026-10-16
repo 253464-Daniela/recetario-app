@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +28,13 @@ import com.daniela.recetario.data.model.Recipe
 import com.daniela.recetario.data.model.RecipeCategory
 import com.daniela.recetario.ui.theme.FavoriteRed
 import com.daniela.recetario.ui.theme.RecetarioTheme
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 
 /**
  * Tarjeta de receta para la lista principal.
@@ -104,6 +110,57 @@ fun RecipeCard(
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SwipeableRecipeCard(
+    recipe: Recipe,
+    onClick: () -> Unit,
+    onFavoriteClick: () -> Unit,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val canDelete = recipe.isUserCreated
+
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value == SwipeToDismissBoxValue.EndToStart && canDelete) {
+                onDelete()
+                true
+            } else false
+        }
+    )
+
+    SwipeToDismissBox(
+        state = dismissState,
+        enableDismissFromStartToEnd = false,
+        enableDismissFromEndToStart = canDelete,
+        backgroundContent = {
+            if (canDelete) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 24.dp),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.list_delete_cd),
+                        tint = MaterialTheme.colorScheme.error
+                    )
+                }
+            }
+        }
+    ) {
+        RecipeCard(
+            recipe = recipe,
+            onClick = onClick,
+            onFavoriteClick = onFavoriteClick,
+            modifier = modifier
+        )
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable

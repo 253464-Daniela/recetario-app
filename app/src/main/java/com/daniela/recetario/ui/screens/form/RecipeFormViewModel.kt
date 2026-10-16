@@ -8,19 +8,30 @@ import com.daniela.recetario.RecetarioApplication
 import com.daniela.recetario.data.model.Ingredient
 import com.daniela.recetario.data.model.Recipe
 import com.daniela.recetario.domain.usecase.AddRecipeUseCase
+import com.daniela.recetario.domain.usecase.GetRecipesUseCase
+import com.daniela.recetario.domain.usecase.UpdateRecipeUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
+import kotlinx.coroutines.flow.first
 
 class RecipeFormViewModel(
-    private val addRecipeUseCase: AddRecipeUseCase
+    private val recipeId: String?,
+    private val addRecipeUseCase: AddRecipeUseCase,
+    private val updateRecipeUseCase: UpdateRecipeUseCase,
+    private val getRecipesUseCase: GetRecipesUseCase
 ) : ViewModel() {
 
+    val isEditMode: Boolean = recipeId != null
     private val _uiState = MutableStateFlow(RecipeFormUiState())
     val uiState: StateFlow<RecipeFormUiState> = _uiState.asStateFlow()
+
+    init {
+        if (isEditMode) loadRecipeForEdit()
+    }
 
     // ============================================================
     // Punto único de entrada de eventos (UDF)
@@ -136,21 +147,64 @@ class RecipeFormViewModel(
         _uiState.update { it.copy(isSaving = true) }
 
         viewModelScope.launch {
-            val recipe = Recipe(
-                id = UUID.randomUUID().toString(),
-                title = state.title.trim(),
-                description = state.description.trim(),
-                category = state.category,
-                difficulty = state.difficulty,
-                prepTimeMinutes = state.prepTime.toIntOrNull() ?: 0,
-                basePortions = state.basePortions,
-                ingredients = state.ingredients,
-                steps = state.steps.filter { it.isNotBlank() },
-                isFavorite = false,
-                isUserCreated = true
-            )
-            addRecipeUseCase(recipe)
+            if (isEditMode && recipeId != null) {
+                val existing = getRecipesUseCase().first().find { it.id == recipeId }
+                val updated = existing?.copy(
+                    title = state.title.trim(),
+                    description = state.description.trim(),
+                    category = state.category,
+                    difficulty = state.difficulty,
+                    prepTimeMinutes = state.prepTime.toIntOrNull() ?: 0,
+                    basePortions = state.basePortions,
+                    ingredients = state.ingredients,
+                    steps = state.steps.filter { it.isNotBlank() }
+                )
+                if (updated != null) updateRecipeUseCase(updated)
+            } else {
+                val recipe = Recipe(
+                    id = UUID.randomUUID().toString(),
+                    title = state.title.trim(),
+                    description = state.description.trim(),
+                    category = state.category,
+                    difficulty = state.difficulty,
+                    prepTimeMinutes = state.prepTime.toIntOrNull() ?: 0,
+                    basePortions = state.basePortions,
+                    ingredients = state.ingredients,
+                    steps = state.steps.filter { it.isNotBlank() },
+                    isFavorite = false,
+                    isUserCreated = true,
+                    createdAt = System.currentTimeMillis()
+                )
+                addRecipeUseCase(recipe)
+            }
             _uiState.update { it.copy(isSaving = false, savedSuccessfully = true) }
+        }
+    }
+
+    private fun loadRecipeForEdit() {
+        val id = recipeId ?: return
+        _uiState.update { it.copy(isLoading = true) }
+        viewModelScope.launch {
+            val recipes = getRecipesUseCase().first()
+            val recipe = recipes.find { it.id == id }
+            if (recipe == null) {
+                _uiState.update { it.copy(isLoading = false) }
+                return@launch
+            }
+            _uiState.update {
+                it.copy(
+                    title = recipe.title,
+                    description = recipe.description,
+                    category = recipe.category,
+                    difficulty = recipe.difficulty,
+                    prepTime = recipe.prepTimeMinutes.toString(),
+                    basePortions = recipe.basePortions,
+                    ingredients = recipe.ingredients,
+                    steps = recipe.steps,
+                    isValid = true,     // una receta existente ya es válida
+                    isLoading = false
+                )
+            }
         }
     }
 
@@ -185,12 +239,19 @@ class RecipeFormViewModel(
     // Factory manual
     // ============================================================
     companion object {
-        fun factory(app: RecetarioApplication): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return RecipeFormViewModel(addRecipeUseCase = app.addRecipeUseCase) as T
-                }
+        fun factory(
+            app: RecetarioApplication,
+            recipeId: String? = null
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return RecipeFormViewModel(
+                    recipeId = recipeId,
+                    addRecipeUseCase = app.addRecipeUseCase,
+                    updateRecipeUseCase = app.updateRecipeUseCase,
+                    getRecipesUseCase = app.getRecipesUseCase
+                ) as T
             }
+        }
     }
 }

@@ -27,4 +27,8 @@ sealed interface RecipeListEvent {
     data object OnToggleOnlyFavorites : RecipeListEvent
 
     data object OnClearFilters : RecipeListEvent
+
+    data object OnUndoDelete : RecipeListEvent
+
+    data object OnConfirmDelete : RecipeListEvent
 }

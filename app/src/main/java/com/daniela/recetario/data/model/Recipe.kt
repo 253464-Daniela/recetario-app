@@ -15,7 +15,7 @@ data class Recipe(
     val steps: List<String>,
     val isFavorite: Boolean = false,
     val isUserCreated: Boolean = false,
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = 0L
 ) {
     fun scaledToPortions(newPortions: Int): List<Ingredient> {
         if (newPortions <= 0 || basePortions <= 0) return ingredients

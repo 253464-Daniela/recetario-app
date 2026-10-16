@@ -52,12 +52,14 @@ import com.daniela.recetario.ui.util.recetarioApp
 
 @Composable
 fun RecipeFormRoute(
+    recipeId: String?,
     onBack: () -> Unit,
     onSaved: () -> Unit
 ) {
     val app = recetarioApp()
     val viewModel: RecipeFormViewModel = viewModel(
-        factory = RecipeFormViewModel.factory(app)
+        key = "form_${recipeId ?: "new"}",
+        factory = RecipeFormViewModel.factory(app, recipeId)
     )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -69,7 +71,8 @@ fun RecipeFormRoute(
     RecipeFormScreen(
         uiState = uiState,
         onEvent = viewModel::onEvent,
-        onBack = onBack
+        onBack = onBack,
+        isEditMode = viewModel.isEditMode
     )
 }
 
@@ -78,12 +81,16 @@ fun RecipeFormRoute(
 fun RecipeFormScreen(
     uiState: RecipeFormUiState,
     onEvent: (RecipeFormEvent) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    isEditMode: Boolean = false
 ) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = stringResource(R.string.form_title)) },
+                title = { Text(text = stringResource(
+                    if (isEditMode) R.string.form_title_edit
+                    else R.string.form_title
+                )) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -277,7 +284,12 @@ fun RecipeFormScreen(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = uiState.isValid && !uiState.isSaving
                 ) {
-                    Text(stringResource(R.string.form_save))
+                    Text(
+                        text = stringResource(
+                            if (isEditMode) R.string.form_save_edit
+                            else R.string.form_save
+                        )
+                    )
                 }
             }
         }
@@ -415,10 +427,12 @@ private fun RecipeFormScreenPreview() {
                     Ingredient("Tortillas", 12.0, "pza")
                 ),
                 steps = listOf("Marinar la carne", "Cocinar a fuego alto"),
-                isValid = true
+                isValid = true,
+
             ),
             onEvent = {},
-            onBack = {}
+            onBack = {},
+            isEditMode = true
         )
     }
 }

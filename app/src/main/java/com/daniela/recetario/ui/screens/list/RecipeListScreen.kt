@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -47,6 +48,13 @@ import com.daniela.recetario.ui.components.RecipeCard
 import com.daniela.recetario.ui.components.RecipeSearchBar
 import com.daniela.recetario.ui.theme.RecetarioTheme
 import com.daniela.recetario.ui.util.recetarioApp
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import com.daniela.recetario.ui.components.SwipeableRecipeCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,7 +88,35 @@ fun RecipeListScreen(
     onNavigateToDetail: (String) -> Unit = {},
     onNavigateToForm: () -> Unit = {}
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val deletedMessage = stringResource(R.string.list_deleted_snackbar)
+    val undoLabel = stringResource(R.string.list_undo)
+    val listState = rememberLazyListState()
+
+    // Snackbar de "Receta eliminada" con acción Deshacer
+    LaunchedEffect(uiState.recentlyDeleted) {
+        val deleted = uiState.recentlyDeleted ?: return@LaunchedEffect
+        val result = snackbarHostState.showSnackbar(
+            message = deletedMessage,
+            actionLabel = undoLabel,
+            duration = SnackbarDuration.Short
+        )
+
+        if (result == SnackbarResult.ActionPerformed) {
+            onEvent(RecipeListEvent.OnUndoDelete)
+        } else {
+            onEvent(RecipeListEvent.OnConfirmDelete)
+        }
+    }
+
+    LaunchedEffect(uiState.recipes.size) {
+        if (uiState.recentlyDeleted == null && uiState.recipes.isNotEmpty()) {
+            listState.animateScrollToItem(0)
+        }
+    }
+
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text(text = stringResource(R.string.list_title)) },
@@ -178,10 +214,11 @@ fun RecipeListScreen(
                     contentPadding = PaddingValues(vertical = 8.dp)
                 ) {
                     items(items = uiState.filteredRecipes, key = { it.id }) { recipe ->
-                        RecipeCard(
+                        SwipeableRecipeCard(
                             recipe = recipe,
                             onClick = { onNavigateToDetail(recipe.id) },
-                            onFavoriteClick = { onEvent(RecipeListEvent.OnFavoriteToggle(recipe.id)) }
+                            onFavoriteClick = { onEvent(RecipeListEvent.OnFavoriteToggle(recipe.id)) },
+                            onDelete = { onEvent(RecipeListEvent.OnRecipeDelete(recipe.id)) }
                         )
                     }
                 }

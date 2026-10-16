@@ -29,7 +29,9 @@ data class RecipeListUiState(
     val favoriteCount: Int = 0,
 
     // Derivados
-    val hasActiveFilters: Boolean = false
+    val hasActiveFilters: Boolean = false,
+
+    val recentlyDeleted: Recipe? = null,
 ) {
     companion object {
         const val DEFAULT_MAX_TIME = 180
