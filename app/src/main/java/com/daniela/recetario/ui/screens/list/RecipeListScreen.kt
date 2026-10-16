@@ -46,19 +46,18 @@ import com.daniela.recetario.ui.components.LoadingState
 import com.daniela.recetario.ui.components.RecipeCard
 import com.daniela.recetario.ui.components.RecipeSearchBar
 import com.daniela.recetario.ui.theme.RecetarioTheme
+import com.daniela.recetario.ui.util.recetarioApp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecipeListRoute(
-    onNavigateToDetail: (String) -> Unit = {},
-    onNavigateToForm: () -> Unit = {},
-    viewModel: RecipeListViewModel = viewModel(
-        factory = RecipeListViewModel.factory(
-            androidx.compose.ui.platform.LocalContext.current.applicationContext
-                    as com.daniela.recetario.RecetarioApplication
-        )
-    )
+    onNavigateToDetail: (String) -> Unit,
+    onNavigateToForm: () -> Unit
 ) {
+    val app = recetarioApp()
+    val viewModel: RecipeListViewModel = viewModel(
+        factory = RecipeListViewModel.factory(app)
+    )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     RecipeListScreen(

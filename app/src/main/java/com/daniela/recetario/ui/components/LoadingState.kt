@@ -23,7 +23,9 @@ fun LoadingState(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(
+            progress = { 0f }
+        )
         Text(
             text = stringResource(R.string.list_loading),
             style = MaterialTheme.typography.bodyMedium,
