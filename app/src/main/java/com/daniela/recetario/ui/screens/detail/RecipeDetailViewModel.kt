@@ -10,7 +10,6 @@ import com.daniela.recetario.domain.usecase.ToggleFavoriteUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -25,28 +24,41 @@ class RecipeDetailViewModel(
     val uiState: StateFlow<RecipeDetailUiState> = _uiState.asStateFlow()
 
     init {
-        loadRecipe()
+        observeRecipe()
     }
 
-    /** Carga la receta correspondiente al [recipeId] recibido por constructor. */
-    private fun loadRecipe() {
+    /**
+     * Observa el Flow del repositorio de forma reactiva.
+     * Cada vez que cambie la receta (por ejemplo, tras editarla),
+     * este bloque re-ejecuta y actualiza el estado.
+     */
+    private fun observeRecipe() {
         viewModelScope.launch {
-            val recipes = getRecipesUseCase().first()
-            val recipe = recipes.find { it.id == recipeId }
+            getRecipesUseCase().collect { recipes ->
+                val recipe = recipes.find { it.id == recipeId }
 
-            if (recipe == null) {
-                _uiState.update { it.copy(isLoading = false, notFound = true) }
-                return@launch
-            }
+                if (recipe == null) {
+                    _uiState.update {
+                        it.copy(isLoading = false, notFound = true, recipe = null)
+                    }
+                    return@collect
+                }
 
-            // Estado inicial: porciones base de la receta
-            _uiState.update {
-                it.copy(
-                    recipe = recipe,
-                    selectedPortions = recipe.basePortions,
-                    scaledIngredients = recipe.ingredients,
-                    isLoading = false
-                )
+                _uiState.update { current ->
+                    val portions = if (current.selectedPortions <= 0) {
+                        recipe.basePortions
+                    } else {
+                        current.selectedPortions
+                    }
+
+                    current.copy(
+                        recipe = recipe,
+                        selectedPortions = portions,
+                        scaledIngredients = scaleIngredientsUseCase(recipe, portions),
+                        isLoading = false,
+                        notFound = false
+                    )
+                }
             }
         }
     }
@@ -58,19 +70,11 @@ class RecipeDetailViewModel(
         }
     }
 
-    /**
-     * Recalcula los ingredientes cuando cambia el slider.
-     * Fórmula: cantidad_nueva = cantidad_base * (porciones_nuevas / porciones_base)
-     */
     private fun updatePortions(newPortions: Int) {
         val recipe = _uiState.value.recipe ?: return
         val scaled = scaleIngredientsUseCase(recipe, newPortions)
-
         _uiState.update {
-            it.copy(
-                selectedPortions = newPortions,
-                scaledIngredients = scaled
-            )
+            it.copy(selectedPortions = newPortions, scaledIngredients = scaled)
         }
     }
 
@@ -78,16 +82,9 @@ class RecipeDetailViewModel(
         val currentRecipe = _uiState.value.recipe ?: return
         viewModelScope.launch {
             toggleFavoriteUseCase(currentRecipe.id)
-            // Refrescamos el estado local optimistamente
-            _uiState.update {
-                it.copy(
-                    recipe = currentRecipe.copy(isFavorite = !currentRecipe.isFavorite)
-                )
-            }
         }
     }
 
-    // ---------- Factory manual ----------
     companion object {
         fun factory(
             app: RecetarioApplication,
