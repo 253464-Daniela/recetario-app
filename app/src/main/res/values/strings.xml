@@ -57,4 +57,14 @@
     <string name="form_error_ingredients">Agrega al menos un ingrediente</string>
     <string name="form_error_steps">Agrega al menos un paso</string>
     <string name="form_error_time">El tiempo debe ser mayor a 0</string>
+
+    <string name="form_delete_ingredient_cd">Eliminar ingrediente</string>
+    <string name="form_delete_step_cd">Eliminar paso</string>
+    <string name="form_ingredient_name_hint">Ingrediente</string>
+    <string name="form_ingredient_quantity_hint">Cantidad</string>
+    <string name="form_ingredient_unit_hint">Unidad</string>
+    <string name="form_step_hint">Describe el paso</string>
+    <string name="form_image_placeholder">Agregar imagen (opcional)</string>
+    <string name="form_saved_success">Receta guardada</string>
+    <string name="form_ingredient_error">El ingrediente debe tener nombre y cantidad</string>
 </resources>
